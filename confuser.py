@@ -14,5 +14,5 @@ if __name__ == "__main__":
     dependencies = npm.extract_packages(sys.argv[1])
     
     for package, version in dependencies.items():
-        if (not npm.check_package_exists(package)):
+        if (npm.is_vulnerable(package)):
             print(package, version)
