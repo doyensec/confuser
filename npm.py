@@ -1,6 +1,7 @@
 import json
 import requests
 import sys
+import os
 
 NPM_ADDRESS = 'https://www.npmjs.com/'
 PROXIES = {
@@ -46,3 +47,15 @@ def is_vulnerable(package_name):
             return True
     
     return False
+
+def upload_package_by_npm():
+    oldcwd = os.getcwd()
+    os.chdir('examplepackage')
+    os.system('npm publish')
+    os.chdir(oldcwd)
+
+def remove_package():
+    oldcwd = os.getcwd()
+    os.chdir('examplepackage')
+    os.system('npm unpublish')
+    os.chdir(oldcwd)
