@@ -1,6 +1,5 @@
 import json
 import requests
-import sys
 import os
 
 NPM_ADDRESS = 'https://www.npmjs.com/'
@@ -9,9 +8,7 @@ PROXIES = {
     'https': 'http://127.0.0.1:8080',
 }
 
-def extract_packages(filename):
-    filename = sys.argv[1]
-    file = open(filename)
+def extract_packages(file):
     parsed = json.load(file)
     dependencies = parsed['dependencies']
 
@@ -47,6 +44,9 @@ def is_vulnerable(package_name):
             return True
     
     return False
+
+def get_vulnerable_packages(packages):
+    return [package for package in packages if is_vulnerable(package)]
 
 def upload_package_by_npm():
     oldcwd = os.getcwd()

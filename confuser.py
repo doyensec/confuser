@@ -10,8 +10,9 @@ if __name__ == "__main__":
     if (len(sys.argv) != 2):
         eprint("Specify requirements file to analyse")
         exit(1)
-
-    dependencies = npm.extract_packages(sys.argv[1])
+    filename = sys.argv[1]
+    file = open(filename)
+    dependencies = npm.extract_packages(file)
     
     for package, version in dependencies.items():
         if (npm.is_vulnerable(package)):
