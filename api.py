@@ -1,10 +1,6 @@
-from ast import parse
-from crypt import methods
-from struct import pack
 from flask import Flask
 from flask import render_template
 from flask import request
-import json
 import npm
 
 app = Flask(__name__)
@@ -19,3 +15,12 @@ def analyze():
     packages = npm.extract_packages(f)
     #return json.dumps(npm.get_vulnerable_packages(packages))
     return render_template("analyze.html", packages=npm.get_vulnerable_packages(packages))
+        
+@app.route("/generate_poc")
+def generate_poc():
+    package_name = request.args.get('package')
+    if not package_name:
+        return "Provide package name.", 400
+
+    npm.create_poc(package_name)
+    return package_name

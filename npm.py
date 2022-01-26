@@ -1,6 +1,9 @@
 import json
 import requests
 import os
+import tempfile
+import shutil
+from flask import render_template
 
 NPM_ADDRESS = 'https://www.npmjs.com/'
 PROXIES = {
@@ -48,10 +51,10 @@ def is_vulnerable(package_name):
 def get_vulnerable_packages(packages):
     return [package for package in packages if is_vulnerable(package)]
 
-def upload_package_by_npm():
+def upload_package_by_npm(path):
     oldcwd = os.getcwd()
-    os.chdir('examplepackage')
-    os.system('npm publish')
+    os.chdir(path)
+    os.system('npm pack --pack-destination=' + oldcwd)
     os.chdir(oldcwd)
 
 def remove_package():
@@ -59,3 +62,12 @@ def remove_package():
     os.chdir('examplepackage')
     os.system('npm unpublish')
     os.chdir(oldcwd)
+
+def create_poc(name):
+    with tempfile.TemporaryDirectory() as poc_dir:
+        shutil.copy('examplepackage/index.js', poc_dir)
+        packagejson_string = render_template("package.json", name=name, version="1.0.0")
+        print(packagejson_string)
+        with  open(poc_dir + "/package.json", "w") as packagejson_file:
+            packagejson_file.write(packagejson_string)
+        upload_package_by_npm(poc_dir)

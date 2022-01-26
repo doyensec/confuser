@@ -1,0 +1,11 @@
+{
+  "name": {{name|tojson}},
+  "version": {{version|tojson}},
+  "description": "A client for an API.",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.25.0"
+  }
+}
