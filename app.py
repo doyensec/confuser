@@ -31,7 +31,7 @@ def analyze():
 
     for dependency in dependencies.keys():
         print(type(dependency))
-        package_record = models.Package(dependency, "", dependency in vulnerable_dependencies)
+        package_record = models.Package(dependency, dependencies.get(dependency), dependency in vulnerable_dependencies)
         project_record.packages.append(package_record)
 
     models.db.session.add(project_record)
