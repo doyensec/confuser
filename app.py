@@ -1,6 +1,3 @@
-from http.client import OK
-from pyexpat import model
-from subprocess import call
 from flask import Flask
 from flask import render_template
 from flask import request
@@ -19,15 +16,29 @@ with app.app_context():
 
 @app.route("/")
 def main():
-    return render_template("main.html")
+    projects = models.Project.query.all()
+
+    return render_template("main.html", projects=projects)
 
 
-@app.route("/analyze", methods=["POST"])
+@app.route("/project/create", methods=["POST"])
 def analyze():
     f = request.files['file']
-    packages = npm.extract_packages(f)
+    package = npm.parse_package(f)
+    project_record = models.Project(package.get("name", ""), "")
+    dependencies = package.get("dependencies")
+    vulnerable_dependencies = npm.get_vulnerable_packages(dependencies)
+
+    for dependency in dependencies.keys():
+        print(type(dependency))
+        package_record = models.Package(dependency, "", dependency in vulnerable_dependencies)
+        project_record.packages.append(package_record)
+
+    models.db.session.add(project_record)
+    models.db.session.commit()
+
     # return json.dumps(npm.get_vulnerable_packages(packages))
-    return render_template("analyze.html", packages=npm.get_vulnerable_packages(packages))
+    return render_template("analyze.html", packages=vulnerable_dependencies)
 
 
 @app.route("/generate_poc")

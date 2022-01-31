@@ -11,6 +11,9 @@ PROXIES = {
     'https': 'http://127.0.0.1:8080',
 }
 
+def parse_package(file):
+    return json.load(file)
+
 def extract_packages(file):
     parsed = json.load(file)
     dependencies = parsed['dependencies']
