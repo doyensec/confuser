@@ -33,7 +33,7 @@ class Project(db.Model):
     description = db.Column(db.String)
     
     callbacks = db.relationship("Callback")
-    packages = db.relationship("Package")
+    packages = db.relationship("Package", lazy="dynamic")
 
     def __init__(self, name, description):
         self.name = name
@@ -46,11 +46,11 @@ class Package(db.Model):
     version = db.Column(db.String)
     vulnerable = db.Column(db.Boolean)
 
-    project_id = db.Column(db.Integer, db.ForeignKey('projects.id'))
+    project_id = db.Column(db.Integer, db.ForeignKey("projects.id"))
 
     def __init__(self, name, version, vulnerable):
         self.name = name
         self.version = version
         self.vulnerable = vulnerable
 
-
+        

@@ -20,6 +20,15 @@ def main():
 
     return render_template("main.html", projects=projects)
 
+@app.route("/project/<project_id>")
+def project(project_id):
+    project = models.Project.query.get(project_id)
+    if not project:
+        return "",404
+
+    vulnerable_dependencies = project.packages.filter_by(vulnerable=True).all()
+
+    return render_template("project.html", project=project, packages=vulnerable_dependencies)
 
 @app.route("/project/create", methods=["POST"])
 def analyze():
