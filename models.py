@@ -1,5 +1,4 @@
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import desc
 
 db = SQLAlchemy()
 
@@ -14,10 +13,11 @@ class Callback(db.Model):
     request = db.Column(db.String)
     response = db.Column(db.String)
     subDomain = db.Column(db.String)
+    payload = db.Column(db.String)
 
     project_id = db.Column(db.Integer, db.ForeignKey('projects.id'))
 
-    def __init__(self, protocol, interactionString, time, client_ip, request, response, subDomain):
+    def __init__(self, protocol, interactionString, time, client_ip, request, response, subDomain, payload, project_id):
         self.protocol = protocol
         self.interactionString = interactionString
         self.time = time
@@ -25,19 +25,23 @@ class Callback(db.Model):
         self.request = request
         self.response = response
         self.subDomain = subDomain
+        self.payload = payload
+        self.project_id = project_id
+
 
 class Project(db.Model):
     __tablename__ = "projects"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
     description = db.Column(db.String)
-    
-    callbacks = db.relationship("Callback")
+
+    callbacks = db.relationship("Callback", lazy="dynamic")
     packages = db.relationship("Package", lazy="dynamic")
 
     def __init__(self, name, description):
         self.name = name
         self.description = description
+
 
 class Package(db.Model):
     __tablename__ = "packages"
@@ -45,12 +49,12 @@ class Package(db.Model):
     name = db.Column(db.String)
     version = db.Column(db.String)
     vulnerable = db.Column(db.Boolean)
+    campaign_active = db.Column(db.Boolean)
 
     project_id = db.Column(db.Integer, db.ForeignKey("projects.id"))
 
-    def __init__(self, name, version, vulnerable):
+    def __init__(self, name, version, vulnerable, campaing_active=False):
         self.name = name
         self.version = version
         self.vulnerable = vulnerable
-
-        
+        self.campaign_active = campaing_active

@@ -1,10 +1,15 @@
+import json
+import regex
 from flask import Flask
 from flask import render_template
 from flask import request
+from itsdangerous import base64_decode
 import npm
 
 from burp import BurpCollaboratorClient
 import models
+
+json_pattern = r'\{(?:[^{}]|(?R))*\}'
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
@@ -20,15 +25,17 @@ def main():
 
     return render_template("main.html", projects=projects)
 
+
 @app.route("/project/<project_id>")
 def project(project_id):
     project = models.Project.query.get(project_id)
     if not project:
-        return "",404
+        return "", 404
 
     vulnerable_dependencies = project.packages.filter_by(vulnerable=True).all()
 
     return render_template("project.html", project=project, packages=vulnerable_dependencies)
+
 
 @app.route("/project/create", methods=["POST"])
 def analyze():
@@ -40,7 +47,8 @@ def analyze():
 
     for dependency in dependencies.keys():
         print(type(dependency))
-        package_record = models.Package(dependency, dependencies.get(dependency), dependency in vulnerable_dependencies)
+        package_record = models.Package(dependency, dependencies.get(
+            dependency), dependency in vulnerable_dependencies)
         project_record.packages.append(package_record)
 
     models.db.session.add(project_record)
@@ -64,13 +72,27 @@ def generate_poc():
 def refresh():
     burp_client = BurpCollaboratorClient(
         "CslwqfTW39cQc7n+nuBgUaEYP9PEIOEuODuduIEoJIM=", "jylzi8mxby9i6hj8plrj0i6v9mff34")
-
     callbacks = burp_client.poll()
     for callback in callbacks:
-        print(callback.get('data').keys())
+        project_id=0
+        protocol = callback.get("protocol", None)
+        payload=None
+        if protocol == "dns":
+            subdomain = callback.get("data").get("subDomain", None)
+            subdomain_split = subdomain.split('.')
+            project_id = subdomain_split[0]
+            payload = subdomain_split[1]
+        elif protocol == "http":
+            request=callback.get("data").get("request", None)
+            request_decoded=base64_decode(request).decode('utf-8')
+            json_string=regex.search(json_pattern, request_decoded)[0]
+            json_parsed=json.loads(json_string)
+            project_id=json_parsed.get("project_id", None)
+            payload=json_parsed.get("payload", None)
         callback_record = models.Callback(protocol=callback.get("protocol", None), interactionString=callback.get("interactionString", None),
                                           time=callback.get("time"), client_ip=callback.get("client", None), request=callback.get("data").get("request", None),
-                                          response=callback.get("data").get("response", None), subDomain=callback.get("data").get("subDomain", None))
+                                          response=callback.get("data").get("response", None), subDomain=callback.get("data").get("subDomain", None),
+                                          project_id=project_id, payload=payload)
 
         models.db.session.add(callback_record)
         models.db.session.commit()
