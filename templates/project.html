@@ -19,14 +19,33 @@
     </div>
   </div>
 
-  <div class="list-group">
+  <ul class="list-group">
     {% if packages | length == 0 %}
     <p>No vulnerable packages!</p>
     {% else %} 
       {% for package in packages %}
-        <a href="/generate_poc?package={{package}}" class="list-group-item list-group-item-action">{{ package.name }} {{package.version}}</a>
+        <li class=list-group-item>
+            {{ package.name }} {{package.version}}
+            {% if package.campaign_active==True %}
+                <a href="#link" class="btn btn-danger" role="button">Stop the campaign</a>
+            {% else %}
+                <a href="#link" class="btn btn-primary" role="button">Start the campaign</a>
+            {% endif %}
+        </li>
       {% endfor %}
     {% endif %}
+  </ul>
+    <ul class="list-group">
+      {% if callbacks | length == 0 %}
+      <p>No callbacks!</p>
+      {% else %} 
+        {% for callback in callbacks %}
+          <li class=list-group-item>
+              {{ callback.time }} {{callback.client_ip}} {{callback.payload}}
+          </li>
+        {% endfor %}
+      {% endif %}
+    </ul>
 </div>
 
 </body>
