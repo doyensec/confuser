@@ -66,10 +66,10 @@ def remove_package():
     os.system('npm unpublish')
     os.chdir(oldcwd)
 
-def create_poc(name):
+def create_poc(project_id, package):
     with tempfile.TemporaryDirectory() as poc_dir:
         shutil.copy('examplepackage/index.js', poc_dir)
-        packagejson_string = render_template("package.json", name=name, version="1.0.0")
+        packagejson_string = render_template("package.json", package=package, project_id=project_id)
         print(packagejson_string)
         with  open(poc_dir + "/package.json", "w") as packagejson_file:
             packagejson_file.write(packagejson_string)

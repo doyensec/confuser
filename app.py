@@ -3,6 +3,7 @@ import regex
 from flask import Flask
 from flask import render_template
 from flask import request
+from flask import redirect
 from itsdangerous import base64_decode
 import npm
 
@@ -56,6 +57,17 @@ def analyze():
 
     # return json.dumps(npm.get_vulnerable_packages(packages))
     return render_template("analyze.html", packages=vulnerable_dependencies)
+
+@app.route("/project/start_campaign", methods=["POST"])
+def start_campaign():
+    project_id = request.form["project_id"]
+    package_id = request.form["package_id"]
+
+    package = models.Package.query.get(package_id)
+    npm.create_poc(project_id, package)
+    package.campaign_active=True
+    models.db.session.commit()
+    return redirect("/project/{}".format(project_id))
 
 
 @app.route("/generate_poc")
