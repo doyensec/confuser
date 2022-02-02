@@ -39,7 +39,13 @@
                 {% if package.campaign_active==True %}
                   <td><a href="#link" class="btn btn-danger" role="button">Stop the campaign</a></td>
                 {% else %}
-                  <td><a href="#link" class="btn btn-primary" role="button">Start the campaign</a></td>
+                  <td>
+                    <form action="/project/start_campaign" method="post">
+                      <input type="hidden" value="{{project.id}}" name="project_id" />
+                      <input type="hidden" value="{{package.id}}" name="package_id" />
+                      <input class="btn btn-warning" type="submit" value="Start campaign" />
+                    </form>
+                  </td>
                 {% endif %}
               </tr>
             {% endfor %}
