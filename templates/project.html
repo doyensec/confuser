@@ -11,6 +11,8 @@
 
 <body>
   <div class="container">
+    <div class="float-left"><a class="btn btn-primary" href="/">Back to project list</a></div>
+    
     <div class="py-5 text-center">
       <h2>Project page</h2>
       <h3>{{project.name}}</h3>
@@ -63,6 +65,8 @@
       <div class="py-5 text-center">
         <h4>Callbacks</h4>
       </div>
+
+      <div class="float-right"><a class="btn btn-primary" href="/refresh">refresh</a></div>
       {% if callbacks | length == 0 %}
           <p>No callbacks!</p>
       {% else %} 
