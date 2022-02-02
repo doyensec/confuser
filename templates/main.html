@@ -10,24 +10,29 @@
 </head>
 
 <body>
-
-  {% for project in projects %}
-  <div class="card" style="width: 18rem;">
-    <div class="card-body">
-      <h5 class="card-title">{{project.name}}</h5>
-      <p class="card-text">{{project.description}}</p>
-      <a href="/project/{{project.id}}" class="btn btn-primary">View</a>
+  <div class="container">
+    <div class="py-5 text-center">
+      <h2>Confuser app</h2>
     </div>
-  </div>
-  {% endfor %}
-
-  <div class="container-sm">
-    <form action="/project/create" method="post" enctype="multipart/form-data">
-      <label for="file" class="form-label">Upload a packages.json file to look for potentially vulnerable
-        packages</label>
-      <input class="form-control" type="file" name="file" accept=".json">
-      <input type="submit" class="btn btn-primary"></input>
-    </form>
+    <div class="row mt-3">
+      {% for project in projects %}
+      <div class="col-sm-3">
+        <h3>{{project.name}}</h5>
+         <p>{{project.description}}</p>
+         <a href="/project/{{project.id}}" class="btn btn-primary">View</a>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="row mt-5"">
+      <form class="form-inline" action="/project/create" method="post" enctype="multipart/form-data">
+        <div class="form-group mb-2">
+          <label for="file" class="form-label">Upload a packages.json to create new project</label>
+          <input class="form-control" type="file" name="file" accept=".json">
+        </div>
+        <input type="submit" class="btn btn-primary"></input>
+      </form>
+    </div>
+    </div>
   </div>
 </body>
 
