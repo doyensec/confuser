@@ -1,4 +1,6 @@
+import datetime
 import json
+import jinja2
 import regex
 from flask import Flask
 from flask import render_template
@@ -19,6 +21,9 @@ models.db.init_app(app)
 with app.app_context():
     models.db.create_all()
 
+@app.template_filter('datetime')
+def format_date(epoch):
+    return datetime.datetime.fromtimestamp(epoch/1000.0).strftime("%m/%d/%Y, %H:%M:%S")
 
 @app.route("/")
 def main():
@@ -34,8 +39,9 @@ def project(project_id):
         return "", 404
 
     vulnerable_dependencies = project.packages.filter_by(vulnerable=True).all()
+    callbacks = project.callbacks.order_by(models.Callback.time.asc()).all()
 
-    return render_template("project.html", project=project, packages=vulnerable_dependencies)
+    return render_template("project.html", project=project, packages=vulnerable_dependencies, callbacks=callbacks)
 
 
 @app.route("/project/create", methods=["POST"])

