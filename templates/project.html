@@ -37,7 +37,13 @@
                 <td>{{package.name }}</td>
                 <td>{{package.version}}</td>
                 {% if package.campaign_active==True %}
-                  <td><a href="#link" class="btn btn-danger" role="button">Stop the campaign</a></td>
+                <td>
+                  <form action="/project/stop_campaign" method="post">
+                    <input type="hidden" value="{{project.id}}" name="project_id" />
+                    <input type="hidden" value="{{package.id}}" name="package_id" />
+                    <input class="btn btn-danger" type="submit" value="Stop campaign" />
+                  </form>
+                </td>
                 {% else %}
                   <td>
                     <form action="/project/start_campaign" method="post">

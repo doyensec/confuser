@@ -15,7 +15,7 @@
         {% if packages | length == 0 %}
         <p>No vulnerable packages!</p>
         {% else %} 
-          {% for package in packages %}
+          {% for package in packages %}z
             <a href="/generate_poc?package={{package}}" class="list-group-item list-group-item-action">{{ package }}</a>
           {% endfor %}
         {% endif %}

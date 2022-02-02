@@ -70,8 +70,19 @@ def start_campaign():
     package_id = request.form["package_id"]
 
     package = models.Package.query.get(package_id)
-    npm.create_poc(project_id, package)
+    npm.generate_package(project_id, package, True)
     package.campaign_active=True
+    models.db.session.commit()
+    return redirect("/project/{}".format(project_id))
+
+@app.route("/project/stop_campaign", methods=["POST"])
+def stop_campaign():
+    project_id = request.form["project_id"]
+    package_id = request.form["package_id"]
+
+    package = models.Package.query.get(package_id)
+    npm.generate_package(project_id, package, False)
+    package.campaign_active=False
     models.db.session.commit()
     return redirect("/project/{}".format(project_id))
 

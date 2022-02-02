@@ -60,17 +60,20 @@ def upload_package_by_npm(path):
     os.system('npm pack --pack-destination=' + oldcwd)
     os.chdir(oldcwd)
 
-def remove_package():
+def remove_package_by_npm(path):
     oldcwd = os.getcwd()
-    os.chdir('examplepackage')
-    os.system('npm unpublish')
+    os.chdir(path)
+    #os.system('npm unpublish')
     os.chdir(oldcwd)
 
-def create_poc(project_id, package):
+def generate_package(project_id, package, publish):
     with tempfile.TemporaryDirectory() as poc_dir:
         shutil.copy('examplepackage/index.js', poc_dir)
         packagejson_string = render_template("package.json", package=package, project_id=project_id)
         print(packagejson_string)
         with  open(poc_dir + "/package.json", "w") as packagejson_file:
             packagejson_file.write(packagejson_string)
-        upload_package_by_npm(poc_dir)
+        if publish:
+            upload_package_by_npm(poc_dir)
+        else:
+            remove_package_by_npm(poc_dir)
