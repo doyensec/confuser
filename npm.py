@@ -69,7 +69,7 @@ def remove_package_by_npm(path):
 def generate_package(project_id, package, publish):
     with tempfile.TemporaryDirectory() as poc_dir:
         shutil.copy('examplepackage/index.js', poc_dir)
-        packagejson_string = render_template("package.json", package=package, project_id=project_id)
+        packagejson_string = render_template("package.json", package_name=package.name, package_version=prepare_version_number(package.version), project_id=project_id)
         print(packagejson_string)
         with  open(poc_dir + "/package.json", "w") as packagejson_file:
             packagejson_file.write(packagejson_string)
@@ -77,3 +77,15 @@ def generate_package(project_id, package, publish):
             upload_package_by_npm(poc_dir)
         else:
             remove_package_by_npm(poc_dir)
+
+def prepare_version_number(version: str):
+    if version[0].isnumeric():
+        return version
+    elif version[0] == '^':
+        split_semver = version[1:].split('.')
+        return "{}.{}.{}".format(split_semver[0], int(split_semver[1])+1, split_semver[2])
+    elif version[0] == '~':
+        split_semver = version[1:].split('.')
+        return "{}.{}.{}".format(split_semver[0], split_semver[1], int(split_semver[2])+1)
+    else:
+        raise "Broken version number"
