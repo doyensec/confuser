@@ -1,6 +1,5 @@
 import datetime
 import json
-import jinja2
 import regex
 from flask import Flask
 from flask import render_template
