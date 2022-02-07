@@ -1,4 +1,5 @@
 import json
+from time import sleep
 import requests
 import os
 import tempfile
@@ -52,7 +53,12 @@ def is_vulnerable(package_name):
     return False
 
 def get_vulnerable_packages(packages):
-    return [package for package in packages if is_vulnerable(package)]
+    #return [package for package in packages if is_vulnerable(package)]
+    for package in packages:
+        sleep(1) # prevent npm rate limit ban
+        if is_vulnerable(package):
+            yield package
+        
 
 def upload_package_by_npm(path):
     oldcwd = os.getcwd()
