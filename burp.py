@@ -21,7 +21,7 @@ class BurpCollaboratorClient():
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36"}
 
         response = requests.get(
-            "https://" + self.BURP_DOMAIN + "/burpresults", params=params, headers=headers, proxies=PROXIES, verify=False)
+            "https://" + self.BURP_DOMAIN + "/burpresults", params=params, headers=headers)#, proxies=PROXIES, verify=False)
 
         if response.status_code != 200:
             raise Error("Failed to poll Burp Collaborator")
