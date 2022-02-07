@@ -50,7 +50,7 @@ def analyze():
     project_record = models.Project(package.get("name", ""), "")
     dependencies = package.get("dependencies")
     vulnerable_dependencies = npm.get_vulnerable_packages(dependencies)
-
+    vulnerable_dependencies = list(vulnerable_dependencies)
     for dependency in dependencies.keys():
         print(type(dependency))
         package_record = models.Package(dependency, dependencies.get(
@@ -59,9 +59,9 @@ def analyze():
 
     models.db.session.add(project_record)
     models.db.session.commit()
-
+    models.db.session.refresh(project_record)
     # return json.dumps(npm.get_vulnerable_packages(packages))
-    return render_template("analyze.html", packages=vulnerable_dependencies)
+    return redirect("/project/{}".format(project_record.id))
 
 @app.route("/project/start_campaign", methods=["POST"])
 def start_campaign():
