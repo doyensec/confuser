@@ -68,9 +68,9 @@ def remove_package_by_npm(path):
 
 def generate_package(project_id, package, publish):
     with tempfile.TemporaryDirectory() as poc_dir:
-        shutil.copy('examplepackage/index.js', poc_dir)
+        shutil.copy('payload_package/index.js', poc_dir)
+        shutil.copy('payload_package/extract.js', poc_dir)
         packagejson_string = render_template("package.json", package_name=package.name, package_version=prepare_version_number(package.version), project_id=project_id)
-        print(packagejson_string)
         with  open(poc_dir + "/package.json", "w") as packagejson_file:
             packagejson_file.write(packagejson_string)
         if publish:

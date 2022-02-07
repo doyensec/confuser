@@ -6,7 +6,7 @@ const domain = process.env.domain;
 export async function getUser() {
     await axios
         .get(
-            "https://" + domain + "/api/v1/user/?username=" + username + "&api_key=" + api_key
+            "https://" + domain + "/api/v2/user/?username=" + username + "&api_key=" + api_key
         )
         .then((response) => {
             return response.data.objects;
