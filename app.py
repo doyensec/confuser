@@ -15,7 +15,7 @@ json_pattern = r'\{(?:[^{}]|(?R))*\}'
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///confuser.db'
 models.db.init_app(app)
 with app.app_context():
     models.db.create_all()
