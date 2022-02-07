@@ -1,5 +1,6 @@
 import datetime
 import json
+from time import time
 import regex
 from flask import Flask
 from flask import render_template
@@ -49,13 +50,24 @@ def analyze():
     package = npm.parse_package(f)
     project_record = models.Project(package.get("name", ""), "")
     dependencies = package.get("dependencies")
-    vulnerable_dependencies = npm.get_vulnerable_packages(dependencies)
-    vulnerable_dependencies = list(vulnerable_dependencies)
+    uncached_dependencies = []
     for dependency in dependencies.keys():
-        print(type(dependency))
+        cached_entry = models.PackageCache.query.filter_by(name=dependency).first()
+        if not cached_entry:
+            uncached_dependencies.append(dependency)
+
+    vulnerable_dependencies = npm.get_vulnerable_packages(uncached_dependencies)
+    vulnerable_dependencies = list(vulnerable_dependencies)
+
+    for dependency in dependencies.keys():
         package_record = models.Package(dependency, dependencies.get(
             dependency), dependency in vulnerable_dependencies)
         project_record.packages.append(package_record)
+
+    for dependency in uncached_dependencies:
+        if dependency not in vulnerable_dependencies:
+            cache_record = models.PackageCache(dependency, time())
+            models.db.session.add(cache_record)
 
     models.db.session.add(project_record)
     models.db.session.commit()

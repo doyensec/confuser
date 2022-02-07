@@ -58,3 +58,13 @@ class Package(db.Model):
         self.version = version
         self.vulnerable = vulnerable
         self.campaign_active = campaing_active
+
+class PackageCache(db.Model):
+    __tablename__ = "PackageCache"
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+    timestamp = db.Column(db.Integer)
+
+    def __init__(self, name, timestamp):
+        self.name = name
+        self.timestamp = timestamp
