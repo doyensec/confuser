@@ -3,7 +3,7 @@
   "version": {{package_version|tojson}},
   "description": "This package is a proof of concept in a white-hat security engagement conducted by Doyensec LLC. It has been uploaded to test for the dependency confusion vulnerability. It's only function is to confirm the installation of the package on victim's machine. It is not malicoius in any way and will be deleted after engagement has been concluded.",
   "main": "index.js",
-  "author": "Doyensec LLC <szymon@doyensec.com>",
+  "author": "Doyensec LLC <info@doyensec.com>",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.25.0"
