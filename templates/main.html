@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Confuser</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+
+<body>
+  <div class="container">
+    <div class="py-5 text-center">
+      <h2>Confuser app</h2>
+    </div>
+    <div class="row mt-3">
+      {% for project in projects %}
+      <div class="col-sm-3">
+        <h3>{{project.name}}</h5>
+         <p>{{project.description}}</p>
+         <a href="/project/{{project.id}}" class="btn btn-primary">View</a>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="row mt-5"">
+      <form class="form-inline" action="/project/create" method="post" enctype="multipart/form-data">
+        <div class="form-group mb-2">
+          <label for="file" class="form-label">Upload a packages.json to create new project</label>
+          <input class="form-control" type="file" name="file" accept=".json">
+        </div>
+        <input type="submit" class="btn btn-primary"></input>
+      </form>
+    </div>
+    </div>
+  </div>
+</body>
+
+</html>

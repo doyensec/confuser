@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Confuser</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+
+<body>
+  <div class="container">
+    <div class="float-left"><a class="btn btn-primary" href="/">Back to project list</a></div>
+    
+    <div class="py-5 text-center">
+      <h2>Project page</h2>
+      <h3>{{project.name}}</h3>
+      <p>{{project.description}}</p>
+    </div>
+    <div class="row-md mt-3">
+      <div class="py-5 text-center">
+        <h4>Vulnerable packages</h4>
+      </div>
+      {% if packages | length == 0 %}
+          <p>No vulnerable packages!</p>
+      {% else %}
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Version</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for package in packages %}
+              <tr>
+                <td>{{package.name }}</td>
+                <td>{{package.version}}</td>
+                {% if package.campaign_active==True %}
+                <td>
+                  <form action="/project/stop_campaign" method="post">
+                    <input type="hidden" value="{{project.id}}" name="project_id" />
+                    <input type="hidden" value="{{package.id}}" name="package_id" />
+                    <input class="btn btn-danger" type="submit" value="Stop campaign" />
+                  </form>
+                </td>
+                {% else %}
+                  <td>
+                    <form action="/project/start_campaign" method="post">
+                      <input type="hidden" value="{{project.id}}" name="project_id" />
+                      <input type="hidden" value="{{package.id}}" name="package_id" />
+                      <input class="btn btn-warning" type="submit" value="Start campaign" />
+                    </form>
+                  </td>
+                {% endif %}
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {%endif%}
+    </div>
+    <div class="row-md mt-3">
+      <div class="py-5 text-center">
+        <h4>Callbacks</h4>
+      </div>
+
+      <div class="float-right"><a class="btn btn-primary" href="/refresh">refresh</a></div>
+      {% if callbacks | length == 0 %}
+          <p>No callbacks!</p>
+      {% else %} 
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Date</th>
+              <th scope="col">Client IP</th>
+              <th scope="col">Hostname</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for callback in callbacks %}
+              <tr>
+                <td>{{callback.time|datetime }}</td>
+                <td>{{callback.client_ip}}</td>
+                <td>{{callback.payload}}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% endif %}      
+    </div>
+  </div>
+</div>
+</body>
+</html>
