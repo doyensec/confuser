@@ -63,13 +63,14 @@ def get_vulnerable_packages(packages):
 def upload_package_by_npm(path):
     oldcwd = os.getcwd()
     os.chdir(path)
-    os.system('npm pack --pack-destination=' + oldcwd)
+    #os.system('npm pack --pack-destination=' + oldcwd)
+    os.system('npm install')
     os.chdir(oldcwd)
 
 def remove_package_by_npm(path):
     oldcwd = os.getcwd()
     os.chdir(path)
-    #os.system('npm unpublish')
+    os.system('npm unpublish')
     os.chdir(oldcwd)
 
 def generate_package(project_id, package, publish):
