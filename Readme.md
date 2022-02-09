@@ -20,3 +20,6 @@ An all-around tool to detect potential targets for dependency-confusion attacks.
 - CSRF protect forms
 - Nicer way to create delete packages (instead of boolean flag)
 - UX fixes (error for POSTing with empty file, add a processing indicator/spinner or something.)
+- Deal with false postives:
+  - NPM aliasses
+  - Github (and other GIT) dependencies
