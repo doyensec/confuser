@@ -49,7 +49,7 @@ def analyze():
     f = request.files['file']
     package = npm.parse_package(f)
     project_record = models.Project(package.get("name", ""), "")
-    dependencies = package.get("dependencies")
+    dependencies = (package.get("dependencies") if package.get("dependencies") else {}) | (package.get("devDependencies") if package.get("devDependencies") else {}) | (package.get("optionalDependencies") if package.get("optionalDependencies") else {})
     uncached_dependencies = []
     for dependency in dependencies.keys():
         cached_entry = models.PackageCache.query.filter_by(name=dependency).first()

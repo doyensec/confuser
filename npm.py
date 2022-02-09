@@ -24,7 +24,7 @@ def extract_packages(file):
 def check_package_exists(package_name):
     # , proxies=PROXIES, verify=False)
     response = requests.get(NPM_ADDRESS + "package/" +
-                            package_name, allow_redirects=False)
+                            package_name, allow_redirects=False, proxies=PROXIES, verify=False)
 
     return (response.status_code == 200)
 
@@ -38,7 +38,7 @@ def check_scope_exists(package_name):
     scope_name = split_package_name[0][1:]
     # ,  proxies=PROXIES, verify=False)
     response = requests.get(
-        NPM_ADDRESS + "~" + scope_name, allow_redirects=False)
+        NPM_ADDRESS + "~" + scope_name, allow_redirects=False, proxies=PROXIES, verify=False)
 
     return (response.status_code == 200)
 
