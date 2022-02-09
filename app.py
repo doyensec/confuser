@@ -7,6 +7,7 @@ from flask import render_template
 from flask import request
 from flask import redirect
 from itsdangerous import base64_decode
+from sqlalchemy import func
 import npm
 
 from burp import BurpCollaboratorClient
@@ -27,7 +28,8 @@ def format_date(epoch):
 
 @app.route("/")
 def main():
-    projects = models.Project.query.all()
+    all_packages_subquery = models.db.session.query(models.Package.project_id, func.count(models.Package.id).filter(models.Package.vulnerable == True).label("count")).group_by(models.Package.project_id).subquery()
+    projects = models.db.session.query(models.Project, all_packages_subquery.c.count).join(all_packages_subquery, all_packages_subquery.c.project_id == models.Project.id, isouter=True).order_by(all_packages_subquery.c.count.desc()).all()
 
     return render_template("main.html", projects=projects)
 

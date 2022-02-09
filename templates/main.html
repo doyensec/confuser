@@ -14,15 +14,6 @@
     <div class="py-5 text-center">
       <h2>Confuser app</h2>
     </div>
-    <div class="row mt-3">
-      {% for project in projects %}
-      <div class="col-sm-3">
-        <h3>{{project.name}}</h5>
-         <p>{{project.description}}</p>
-         <a href="/project/{{project.id}}" class="btn btn-primary">View</a>
-      </div>
-      {% endfor %}
-    </div>
     <div class="row mt-5"">
       <form class="form-inline" action="/project/create" method="post" enctype="multipart/form-data">
         <div class="form-group mb-2">
@@ -32,6 +23,27 @@
         <input type="submit" class="btn btn-primary"></input>
       </form>
     </div>
+    <div class="row mt-3">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Project</th>
+            <th scope="col">Description</th>
+            <th scope="col">Vulnerable Packages</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for project in projects %}
+          <tr>
+            <td>{{project['Project'].name}}</h5>
+            <td>{{project['Project'].description}}</p>
+            <td>{{project['count']}}</td>
+            <td><a href="/project/{{project['Project'].id}}" class="btn btn-primary">View</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table> 
     </div>
   </div>
 </body>
