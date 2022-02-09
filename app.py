@@ -133,7 +133,7 @@ def refresh():
             subdomain_split = subdomain.split('.')
             project_id = subdomain_split[0]
             payload = subdomain_split[1]
-        elif protocol == "http":
+        elif protocol == "http" or protocol == "https":
             request=callback.get("data").get("request", None)
             request_decoded=base64_decode(request).decode('utf-8')
             json_string=regex.search(json_pattern, request_decoded)[0]
