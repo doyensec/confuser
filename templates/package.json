@@ -1,7 +1,7 @@
 {
   "name": {{package_name|tojson}},
   "version": {{package_version|tojson}},
-  "description": "This package is a proof of concept in a white-hat security engagement conducted by Doyensec LLC. It has been uploaded to test for the dependency confusion vulnerability. It's only function is to confirm the installation of the package on victim's machine. It is not malicoius in any way and will be deleted after engagement has been concluded.",
+  "description": "This package is a proof of concept used by Doyensec LLC to conduct a research. It has been uploaded for test purposes only. Its only function is to confirm the installation of the package on victim's machines. The code is not malicious in any way and will be deleted after the research survey has been concluded. Doyensec LLC does not accept any liability for any direct, indirect, or consequential loss or damage arising from use of, or reliance on, this package.",
   "main": "index.js",
   "author": "Doyensec LLC <info@doyensec.com>",
   "license": "ISC",
