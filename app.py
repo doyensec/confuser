@@ -99,6 +99,15 @@ def stop_campaign():
     models.db.session.commit()
     return redirect("/project/{}".format(project_id))
 
+@app.route("/project/false_positive", methods=["POST"])
+def false_positive():
+    project_id = request.form["project_id"]
+    package_id = request.form["package_id"]
+    package = models.Package.query.get(package_id)
+    package.vulnerable = False
+
+    models.db.session.commit()
+    return redirect("/project/{}".format(project_id))
 
 @app.route("/generate_poc")
 def generate_poc():
