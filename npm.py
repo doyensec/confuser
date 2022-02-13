@@ -24,8 +24,7 @@ def extract_packages(file):
 def check_package_exists(package_name):
     # , proxies=PROXIES, verify=False)
     response = requests.get(NPM_ADDRESS + "package/" +
-                            package_name, allow_redirects=False, proxies=PROXIES, verify=False)
-
+                            package_name, allow_redirects=False)
     return (response.status_code == 200)
 
 def is_scoped(package_name):
@@ -38,7 +37,7 @@ def check_scope_exists(package_name):
     scope_name = split_package_name[0][1:]
     # ,  proxies=PROXIES, verify=False)
     response = requests.get(
-        NPM_ADDRESS + "~" + scope_name, allow_redirects=False, proxies=PROXIES, verify=False)
+        NPM_ADDRESS + "~" + scope_name, allow_redirects=False)
 
     return (response.status_code == 200)
 
@@ -53,7 +52,7 @@ def is_vulnerable(package_name):
     return False
 
 def get_vulnerable_packages(packages):
-    #return [package for package in packages if is_vulnerable(package)]
+    
     for package in packages:
         sleep(1) # prevent npm rate limit ban
         if is_vulnerable(package):
