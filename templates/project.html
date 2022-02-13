@@ -44,6 +44,7 @@
                   <form action="/project/stop_campaign" method="post">
                     <input type="hidden" value="{{project.id}}" name="project_id" />
                     <input type="hidden" value="{{package.id}}" name="package_id" />
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                     <input class="btn btn-danger" type="submit" value="Stop campaign" />
                   </form>
                 </td>
@@ -52,6 +53,7 @@
                     <form action="/project/start_campaign" method="post">
                       <input type="hidden" value="{{project.id}}" name="project_id" />
                       <input type="hidden" value="{{package.id}}" name="package_id" />
+                      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                       <input class="btn btn-warning" type="submit" value="Start campaign" />
                     </form>
                   </td>
@@ -60,6 +62,7 @@
                   <form action="/project/false_positive" method="post">
                     <input type="hidden" value="{{project.id}}" name="project_id" />
                     <input type="hidden" value="{{package.id}}" name="package_id" />
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                     <input class="btn btn-danger" type="submit" value="Mark false positive" />
                   </form>
                 </td>

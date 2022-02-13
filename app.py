@@ -6,9 +6,12 @@ from flask import Flask
 from flask import render_template
 from flask import request
 from flask import redirect
+from flask_wtf.csrf import CSRFProtect
 from itsdangerous import base64_decode
 from sqlalchemy import func
 import npm
+import os
+
 
 from burp import BurpCollaboratorClient
 import models
@@ -17,7 +20,9 @@ json_pattern = r'\{(?:[^{}]|(?R))*\}'
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
+app.config['SECRET_KEY'] = os.urandom(32)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///confuser.db'
+csrf = CSRFProtect(app)
 models.db.init_app(app)
 with app.app_context():
     models.db.create_all()
