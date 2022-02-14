@@ -19,6 +19,7 @@ An all-around tool to detect potential targets for dependency-confusion attacks.
 - Configuration options instead of hardcoded NPM and Burp Collaborator creds
 - Nicer way to create delete packages (instead of boolean flag)
 - UX fixes (error for POSTing with empty file, add a processing indicator/spinner or something.)
+- Extracting more information from victims: local path and local user
 - Deal with false postives:
   - NPM aliasses
   - Github (and other GIT) dependencies
