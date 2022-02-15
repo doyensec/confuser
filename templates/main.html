@@ -18,6 +18,7 @@
       <form class="form-inline" action="/project/create" method="post" enctype="multipart/form-data">
         <div class="form-group mb-2">
           <label for="file" class="form-label">Upload a packages.json to create new project</label>
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
           <input class="form-control" type="file" name="file" accept=".json">
         </div>
         <input type="submit" class="btn btn-primary"></input>
